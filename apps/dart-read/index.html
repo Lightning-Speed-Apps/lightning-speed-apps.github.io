@@ -1,0 +1,1074 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DartRead - Speed Reading for Everything</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --accent: #6366f1;
+        --accent-light: #818cf8;
+        --accent-dim: rgba(99, 102, 241, 0.15);
+        --bg: #0f0f13;
+        --surface: #18181f;
+        --surface2: #1e1e27;
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #f1f1f5;
+        --text2: #a0a0b8;
+        --text3: #64647a;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* ── Nav ── */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 40px;
+        background: rgba(15, 15, 19, 0.85);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-logo {
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: var(--text);
+      }
+
+      .nav-logo span {
+        color: var(--accent-light);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text2);
+        transition: color 0.2s;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .nav-cta {
+        background: var(--accent);
+        color: #fff !important;
+        padding: 9px 20px;
+        border-radius: 100px;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        transition: opacity 0.2s !important;
+      }
+
+      .nav-cta:hover {
+        opacity: 0.85;
+      }
+
+      /* ── Sections ── */
+      section {
+        padding: 96px 40px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      /* ── Hero ── */
+      .hero {
+        text-align: center;
+        padding-top: 120px;
+        padding-bottom: 80px;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        background: var(--accent-dim);
+        color: var(--accent-light);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        padding: 6px 16px;
+        border-radius: 100px;
+        margin-bottom: 28px;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+      }
+
+      .hero h1 {
+        font-size: clamp(40px, 6vw, 72px);
+        font-weight: 800;
+        letter-spacing: -2px;
+        line-height: 1.05;
+        margin-bottom: 24px;
+      }
+
+      .hero h1 span {
+        color: var(--accent-light);
+      }
+
+      .hero p {
+        font-size: 19px;
+        color: var(--text2);
+        max-width: 560px;
+        margin: 0 auto 40px;
+        line-height: 1.65;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 64px;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+        padding: 14px 28px;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 16px;
+        transition: opacity 0.2s;
+      }
+
+      .btn-primary:hover {
+        opacity: 0.85;
+      }
+
+      .btn-secondary {
+        background: var(--surface);
+        color: var(--text);
+        padding: 14px 28px;
+        border-radius: 100px;
+        font-weight: 600;
+        font-size: 16px;
+        border: 1px solid var(--border);
+        transition: border-color 0.2s;
+      }
+
+      .btn-secondary:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      /* Hero placeholder image */
+      .hero-media {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+        aspect-ratio: 9/19.5;
+        background: var(--surface);
+        border-radius: 40px;
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        color: var(--text3);
+        font-size: 14px;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+      }
+
+      .hero-media svg {
+        opacity: 0.4;
+      }
+
+      /* ── Section header ── */
+      .section-label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--accent-light);
+        margin-bottom: 12px;
+      }
+
+      .section-title {
+        font-size: clamp(28px, 4vw, 42px);
+        font-weight: 800;
+        letter-spacing: -1px;
+        line-height: 1.1;
+        margin-bottom: 16px;
+      }
+
+      .section-subtitle {
+        font-size: 17px;
+        color: var(--text2);
+        max-width: 520px;
+        line-height: 1.65;
+      }
+
+      /* ── Feature split rows ── */
+      .feature-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        margin-bottom: 100px;
+      }
+
+      .feature-row:last-child {
+        margin-bottom: 0;
+      }
+      .feature-row.reverse {
+        direction: rtl;
+      }
+      .feature-row.reverse > * {
+        direction: ltr;
+      }
+
+      .feature-text h2 {
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.75px;
+        margin-bottom: 14px;
+        line-height: 1.15;
+      }
+
+      .feature-text p {
+        font-size: 16px;
+        color: var(--text2);
+        line-height: 1.7;
+      }
+
+      /* Media placeholder */
+      .media-placeholder {
+        width: 100%;
+        aspect-ratio: 9/17;
+        background: var(--surface);
+        border-radius: 28px;
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: var(--text3);
+        font-size: 13px;
+        max-width: 280px;
+        margin: 0 auto;
+      }
+
+      .media-placeholder.wide {
+        aspect-ratio: 16/10;
+        max-width: 100%;
+        border-radius: 16px;
+      }
+
+      .placeholder-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--surface2);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent-light);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.8px;
+      }
+
+      /* ── Content types grid ── */
+      .content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        margin-top: 48px;
+      }
+
+      .content-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 28px 24px;
+        transition:
+          border-color 0.2s,
+          transform 0.2s;
+      }
+
+      .content-card:hover {
+        border-color: rgba(99, 102, 241, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .content-card-icon {
+        width: 42px;
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--surface2);
+        border-radius: 12px;
+        color: var(--accent-light);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.8px;
+        margin-bottom: 14px;
+      }
+
+      .content-card h3 {
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+
+      .content-card p {
+        font-size: 13px;
+        color: var(--text3);
+        line-height: 1.55;
+      }
+
+      /* ── Stats strip ── */
+      .stats-strip {
+        display: flex;
+        gap: 0;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        overflow: hidden;
+        margin-top: 0;
+      }
+
+      .stat {
+        flex: 1;
+        padding: 36px 28px;
+        border-right: 1px solid var(--border);
+        text-align: center;
+      }
+
+      .stat:last-child {
+        border-right: none;
+      }
+
+      .stat-value {
+        font-size: 36px;
+        font-weight: 800;
+        letter-spacing: -1px;
+        color: var(--accent-light);
+        margin-bottom: 6px;
+      }
+
+      .stat-label {
+        font-size: 13px;
+        color: var(--text3);
+      }
+
+      /* ── Divider ── */
+      hr.divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 0 40px;
+      }
+
+      /* ── CTA band ── */
+      .cta-band {
+        text-align: center;
+        background: linear-gradient(
+          135deg,
+          rgba(99, 102, 241, 0.12) 0%,
+          rgba(129, 140, 248, 0.06) 100%
+        );
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 96px 40px;
+      }
+
+      .cta-band h2 {
+        font-size: clamp(28px, 4vw, 48px);
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 16px;
+      }
+
+      .cta-band p {
+        font-size: 17px;
+        color: var(--text2);
+        margin-bottom: 36px;
+      }
+
+      /* ── Footer ── */
+      footer {
+        padding: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        border-top: 1px solid var(--border);
+      }
+
+      .footer-logo {
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
+
+      .footer-logo span {
+        color: var(--accent-light);
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 28px;
+        list-style: none;
+        flex-wrap: wrap;
+      }
+
+      .footer-links a {
+        font-size: 14px;
+        color: var(--text3);
+        transition: color 0.2s;
+      }
+
+      .footer-links a:hover {
+        color: var(--text);
+      }
+
+      .footer-copy {
+        font-size: 13px;
+        color: var(--text3);
+      }
+
+      /* ── Policy Modal ── */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(6px);
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .modal-overlay.open {
+        display: flex;
+      }
+
+      .modal {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        width: 100%;
+        max-width: 680px;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 32px 20px;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+
+      .modal-header h2 {
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.3px;
+      }
+
+      .modal-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--surface2);
+        border: none;
+        color: var(--text2);
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+        line-height: 1;
+      }
+
+      .modal-close:hover {
+        background: var(--border);
+        color: var(--text);
+      }
+
+      .modal-body {
+        overflow-y: auto;
+        padding: 32px;
+        flex: 1;
+      }
+
+      .modal-body h3 {
+        font-size: 15px;
+        font-weight: 700;
+        margin: 28px 0 8px;
+        color: var(--text);
+      }
+
+      .modal-body h3:first-child {
+        margin-top: 0;
+      }
+
+      .modal-body p {
+        font-size: 14px;
+        color: var(--text2);
+        line-height: 1.7;
+        margin-bottom: 8px;
+      }
+
+      .modal-body a {
+        color: var(--accent-light);
+        text-decoration: underline;
+      }
+
+      .modal-updated {
+        font-size: 12px;
+        color: var(--text3);
+        margin-bottom: 24px;
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 720px) {
+        nav {
+          padding: 14px 20px;
+        }
+        .nav-links {
+          display: none;
+        }
+        section {
+          padding: 64px 20px;
+        }
+        .hero {
+          padding-top: 72px;
+        }
+        .feature-row {
+          grid-template-columns: 1fr;
+          gap: 36px;
+        }
+        .feature-row.reverse {
+          direction: ltr;
+        }
+        .stats-strip {
+          flex-direction: column;
+        }
+        .stat {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .stat:last-child {
+          border-bottom: none;
+        }
+        footer {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 20px;
+        }
+        .cta-band {
+          padding: 64px 20px;
+        }
+        hr.divider {
+          margin: 0 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── Nav ── -->
+    <nav>
+      <div class="nav-logo">Dart <span>Read</span></div>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#content">Content</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#" class="nav-cta">Download</a></li>
+      </ul>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+      <div class="hero-badge">Speed Reading, Reimagined</div>
+      <h1>Read faster.<br /><span>Read everything.</span></h1>
+      <p>
+        RSVP flash reading and guided highlight modes for books, articles, Substack newsletters, and
+        fanfiction. One app for the reading list you actually have.
+      </p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">Download on the App Store</a>
+        <a href="#features" class="btn-secondary">See how it works</a>
+      </div>
+
+      <!-- Replace with hero screenshot or app preview GIF -->
+      <div class="hero-media">
+        <div class="placeholder-icon" aria-hidden="true">APP</div>
+        <span>App screenshot or preview GIF</span>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── Features ── -->
+    <section id="features">
+      <div class="section-label">How it works</div>
+      <h2 class="section-title">Four modes.</h2>
+      <p class="section-subtitle">Pick the reading style that fits your brain.</p>
+
+      <div style="margin-top: 72px">
+        <div class="feature-row">
+          <div class="feature-text">
+            <h2>RSVP Mode</h2>
+            <p>
+              Words flash one at a time right in front of you, so your eyes never wander. Set your
+              WPM, hit play, and let the words come to you. Adjust speed on the fly, skip ahead, or
+              rewind. Works best when you want to push your pace.
+            </p>
+          </div>
+          <!-- Replace with RSVP mode GIF -->
+          <div class="media-placeholder">
+            <div class="placeholder-icon" aria-hidden="true">RSVP</div>
+            <span>RSVP mode GIF</span>
+          </div>
+        </div>
+
+        <div class="feature-row reverse">
+          <div class="feature-text">
+            <h2>Highlight Mode</h2>
+            <p>
+              The full article or chapter stays on screen while each word is highlighted and
+              auto-scrolled as you read. It is easier to follow for longer sessions because you keep
+              context without losing speed. Great for dense material where re-reading a sentence
+              matters.
+            </p>
+          </div>
+          <!-- Replace with Highlight mode GIF -->
+          <div class="media-placeholder">
+            <div class="placeholder-icon" aria-hidden="true">HL</div>
+            <span>Highlight mode GIF</span>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-text">
+            <h2>Classic E-reader</h2>
+            <p>
+              Sometimes you just want to read. The built-in e-reader gives you a clean,
+              distraction-free view with customizable fonts, font sizes, and line spacing. Chapter
+              navigation, notes, and progress tracking included.
+            </p>
+          </div>
+          <!-- Replace with E-reader screenshot -->
+          <div class="media-placeholder">
+            <div class="placeholder-icon" aria-hidden="true">READ</div>
+            <span>E-reader screenshot</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── Content Types ── -->
+    <section id="content">
+      <div class="section-label">What you can read</div>
+      <h2 class="section-title">Your entire<br />reading stack.</h2>
+      <p class="section-subtitle">
+        Import once, read anywhere. DartRead handles every format without friction.
+      </p>
+
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>EPUBs</h3>
+          <p>
+            Import any EPUB directly from your files. Full chapter navigation, fonts, and progress
+            sync.
+          </p>
+        </div>
+        <div class="content-card">
+          <h3>Articles</h3>
+          <p>Paste any article URL and get a clean, readable version without ads or clutter.</p>
+        </div>
+        <div class="content-card">
+          <h3>Substack</h3>
+          <p>Follow your favorite Substack writers and read their posts at your own pace.</p>
+        </div>
+        <div class="content-card">
+          <h3>Project Gutenberg</h3>
+          <p>Browse and import thousands of free classic books directly inside the app.</p>
+        </div>
+        <div class="content-card">
+          <h3>AO3 Fanfiction</h3>
+          <p>Import any AO3 work by URL. Chapter notes, multi-chapter works, all of it.</p>
+        </div>
+      </div>
+
+      <!-- Replace with content browser screenshot -->
+      <div class="media-placeholder wide" style="margin-top: 48px">
+        <div class="placeholder-icon" aria-hidden="true">LIB</div>
+        <span>Library / browse screen screenshot</span>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── CTA ── -->
+    <div class="cta-band">
+      <h2>Read with focus.<br />Keep your momentum.</h2>
+      <p>Free to try. No account required.</p>
+      <a href="#" class="btn-primary">Download on the App Store</a>
+    </div>
+
+    <!-- ── Contact ── -->
+    <section id="contact" style="padding-bottom: 48px">
+      <div class="section-label">Get in touch</div>
+      <h2 class="section-title">We're here<br />to help.</h2>
+      <p class="section-subtitle">
+        Have a question, found a bug, or want to share feedback? Reach out. We read every message.
+      </p>
+      <div style="display: flex; gap: 14px; margin-top: 36px; flex-wrap: wrap">
+        <a
+          href="mailto:lightning.speed.apps@gmail.com?subject=Dart%20Read%20-%20Contact"
+          class="btn-primary"
+          >Contact Us</a
+        >
+        <a
+          href="mailto:lightning.speed.apps@gmail.com?subject=Dart%20Read%20-%20Issue%20Report"
+          class="btn-secondary"
+          >Report an Issue</a
+        >
+      </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer>
+      <div class="footer-logo">Dart <span>Read</span></div>
+      <ul class="footer-links">
+        <li>
+          <a href="mailto:lightning.speed.apps@gmail.com?subject=Dart%20Read%20-%20Contact"
+            >Contact</a
+          >
+        </li>
+        <li>
+          <a href="mailto:lightning.speed.apps@gmail.com?subject=Dart%20Read%20-%20Issue%20Report"
+            >Report an Issue</a
+          >
+        </li>
+        <li>
+          <a href="#privacy-policy" id="privacy-link" onclick="openPolicy(event)">Privacy Policy</a>
+        </li>
+        <li>
+          <a href="#terms-of-use" id="terms-link" onclick="openTerms(event)">Terms of Use</a>
+        </li>
+      </ul>
+      <div class="footer-copy">© 2026 DartRead. All rights reserved.</div>
+    </footer>
+
+    <!-- ── Privacy Policy Modal ── -->
+    <div
+      class="modal-overlay"
+      id="policy-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="policy-title"
+    >
+      <div class="modal">
+        <div class="modal-header">
+          <h2 id="policy-title">Privacy Policy</h2>
+          <button class="modal-close" onclick="closePolicy()" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-updated">Last updated: April 2026</p>
+
+          <h3>Overview</h3>
+          <p>
+            DartRead is designed to respect your privacy. We do not require you to create an
+            account, and we do not collect or sell your personal data. This policy explains what
+            limited data is handled when you use the app.
+          </p>
+
+          <h3>Data stored on your device</h3>
+          <p>
+            All reading progress, settings, notes, and reading history are stored locally on your
+            device using on-device storage. This data never leaves your device and is not accessible
+            to us.
+          </p>
+
+          <h3>Content fetching</h3>
+          <p>
+            When you import an article, Substack post, or AO3 fanfiction by URL, the app fetches the
+            content directly from that third-party website on your behalf. The fetched text is
+            parsed and stored locally on your device. We do not receive, log, or store the URLs you
+            import or the content retrieved.
+          </p>
+          <p>
+            Please be aware that the third-party websites you fetch content from may have their own
+            privacy practices and may log your request independently of DartRead.
+          </p>
+
+          <h3>Subscriptions and purchases</h3>
+          <p>
+            DartRead offers an optional auto-renewable subscription ("DartRead Unlimited") processed
+            through the app marketplace where you subscribe, such as Apple's App Store or Google
+            Play. We use RevenueCat to manage subscription state. RevenueCat may collect certain
+            device identifiers and purchase information to verify your subscription status. You can
+            review RevenueCat's privacy policy at
+            <a href="https://www.revenuecat.com/privacy" target="_blank" rel="noopener"
+              >revenuecat.com/privacy</a
+            >.
+          </p>
+          <p>
+            We do not receive or store your payment details. All billing is handled by the app
+            marketplace.
+          </p>
+
+          <h3>Analytics and tracking</h3>
+          <p>
+            DartRead does not use any analytics, crash reporting, or advertising SDKs. We do not
+            track your behavior across apps or websites.
+          </p>
+
+          <h3>Children's privacy</h3>
+          <p>
+            DartRead is not directed at children under the age of 13. We do not knowingly collect
+            any information from children.
+          </p>
+
+          <h3>Changes to this policy</h3>
+          <p>
+            We may update this privacy policy from time to time. Any changes will be reflected on
+            this page with an updated date. Continued use of the app after changes constitutes
+            acceptance of the updated policy.
+          </p>
+
+          <h3>Contact</h3>
+          <p>
+            If you have any questions about this privacy policy or how your data is handled, please
+            contact us at
+            <a href="mailto:lightning.speed.apps@gmail.com?subject=Dart%20Read%20-%20Privacy"
+              >lightning.speed.apps@gmail.com</a
+            >.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms of Use Modal -->
+    <div
+      class="modal-overlay"
+      id="terms-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="terms-title"
+    >
+      <div class="modal">
+        <div class="modal-header">
+          <h2 id="terms-title">Terms of Use</h2>
+          <button class="modal-close" onclick="closeTerms()" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-updated">Last updated: April 2026</p>
+
+          <h3>Overview</h3>
+          <p>
+            These Terms of Use govern your access to and use of DartRead, including the DartRead
+            mobile app and this website. By downloading, accessing, or using DartRead, you agree to
+            these terms.
+          </p>
+
+          <h3>App license</h3>
+          <p>
+            DartRead is licensed to you for personal, non-commercial use. You may use the app on
+            devices that you own or control, subject to these terms and any terms that apply through
+            the app marketplace where you downloaded it.
+          </p>
+          <p>
+            You may not copy, resell, redistribute, reverse engineer, or attempt to extract the
+            source code of DartRead except where applicable law expressly allows it.
+          </p>
+
+          <h3>Your content and third-party sources</h3>
+          <p>
+            DartRead lets you import EPUBs, articles, Substack posts, AO3 works, and other reading
+            material at your direction. You are responsible for making sure you have the right to
+            access, import, store, and read that content.
+          </p>
+          <p>
+            We do not claim ownership over the files, links, notes, reading progress, or other
+            content you keep in DartRead. Third-party websites and publishers may have their own
+            terms, copyright rules, paywalls, age gates, or access restrictions, and those remain
+            your responsibility.
+          </p>
+
+          <h3>Acceptable use</h3>
+          <p>
+            Do not use DartRead to violate the law, infringe intellectual property rights, bypass
+            access controls, scrape services without permission, distribute harmful code, or
+            interfere with the app, website, or third-party services.
+          </p>
+
+          <h3>Subscriptions and purchases</h3>
+          <p>
+            DartRead may offer optional paid features, including the DartRead Unlimited
+            auto-renewable subscription. Billing, renewal, cancellation, and refund handling are
+            managed by the app marketplace where you made the purchase, such as Apple's App Store or
+            Google Play.
+          </p>
+          <p>
+            Subscription access may change if payment fails, a purchase is refunded, or the
+            marketplace reports that your entitlement is no longer active.
+          </p>
+
+          <h3>Reading results</h3>
+          <p>
+            DartRead is a reading tool. We do not guarantee a particular reading speed,
+            comprehension result, productivity outcome, or availability of any third-party content
+            source.
+          </p>
+
+          <h3>Changes and availability</h3>
+          <p>
+            We may update, improve, suspend, or discontinue parts of DartRead over time. We may also
+            update these terms by posting the revised version here with a new updated date.
+            Continued use of DartRead after changes means you accept the updated terms.
+          </p>
+
+          <h3>No warranties</h3>
+          <p>
+            DartRead is provided as is and as available. To the fullest extent permitted by law, we
+            disclaim warranties of merchantability, fitness for a particular purpose,
+            noninfringement, and uninterrupted or error-free operation.
+          </p>
+
+          <h3>Limitation of liability</h3>
+          <p>
+            To the fullest extent permitted by law, DartRead and its developer will not be liable
+            for indirect, incidental, special, consequential, exemplary, or punitive damages, or for
+            lost data, lost content, lost profits, or service interruptions arising from your use of
+            DartRead.
+          </p>
+
+          <h3>Privacy</h3>
+          <p>
+            Your use of DartRead is also covered by our
+            <a href="#privacy-policy" onclick="openPolicy(event)">Privacy Policy</a>.
+          </p>
+
+          <h3>Contact</h3>
+          <p>
+            If you have questions about these terms, please contact us at
+            <a href="mailto:lightning.speed.apps@gmail.com?subject=Dart%20Read%20-%20Terms"
+              >lightning.speed.apps@gmail.com</a
+            >.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function openModal(overlayId, hash, e) {
+        if (e) e.preventDefault();
+        var overlay = document.getElementById(overlayId);
+        if (!overlay) return;
+
+        document.querySelectorAll('.modal-overlay.open').forEach(function (openOverlay) {
+          openOverlay.classList.remove('open');
+        });
+
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        history.replaceState(null, '', hash);
+      }
+
+      function clearLegalHash() {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+
+      function closeModal(overlayId) {
+        var overlay = document.getElementById(overlayId);
+        if (overlay) overlay.classList.remove('open');
+
+        if (!document.querySelector('.modal-overlay.open')) {
+          document.body.style.overflow = '';
+          clearLegalHash();
+        }
+      }
+
+      function closeAllModals() {
+        var openOverlays = document.querySelectorAll('.modal-overlay.open');
+        if (!openOverlays.length) return;
+
+        openOverlays.forEach(function (overlay) {
+          overlay.classList.remove('open');
+        });
+        document.body.style.overflow = '';
+        clearLegalHash();
+      }
+
+      function openPolicy(e) {
+        openModal('policy-overlay', '#privacy-policy', e);
+      }
+
+      function closePolicy() {
+        closeModal('policy-overlay');
+      }
+
+      function openTerms(e) {
+        openModal('terms-overlay', '#terms-of-use', e);
+      }
+
+      function closeTerms() {
+        closeModal('terms-overlay');
+      }
+
+      document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
+        overlay.addEventListener('click', function (e) {
+          if (e.target === this) closeModal(this.id);
+        });
+      });
+
+      // Close on Escape key
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeAllModals();
+      });
+
+      // Auto-open legal modals when linked directly.
+      if (window.location.hash === '#privacy-policy') openPolicy();
+      if (window.location.hash === '#terms-of-use') openTerms();
+    </script>
+  </body>
+</html>
