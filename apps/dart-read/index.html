@@ -105,6 +105,7 @@
         padding: 96px 40px;
         max-width: 1100px;
         margin: 0 auto;
+        scroll-margin-top: 84px;
       }
 
       /* ── Hero ── */
@@ -184,7 +185,7 @@
         border-color: rgba(255, 255, 255, 0.2);
       }
 
-      /* Hero placeholder image */
+      /* Hero app screenshot */
       .hero-media {
         width: 100%;
         max-width: 320px;
@@ -193,18 +194,15 @@
         background: var(--surface);
         border-radius: 40px;
         border: 1px solid var(--border);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        color: var(--text3);
-        font-size: 14px;
+        overflow: hidden;
         box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
       }
 
-      .hero-media svg {
-        opacity: 0.4;
+      .app-media {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
 
       /* ── Section header ── */
@@ -265,28 +263,23 @@
         line-height: 1.7;
       }
 
-      /* Media placeholder */
+      /* App media */
       .media-placeholder {
         width: 100%;
-        aspect-ratio: 9/17;
+        aspect-ratio: 9/19.5;
         background: var(--surface);
         border-radius: 28px;
         border: 1px solid var(--border);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        color: var(--text3);
-        font-size: 13px;
+        overflow: hidden;
         max-width: 280px;
         margin: 0 auto;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
       }
 
       .media-placeholder.wide {
         aspect-ratio: 16/10;
         max-width: 100%;
-        border-radius: 16px;
+        border-radius: 20px;
       }
 
       .placeholder-icon {
@@ -616,7 +609,7 @@
       <ul class="nav-links">
         <li><a href="#features">Features</a></li>
         <li><a href="#content">Content</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#support">Support</a></li>
         <li><a href="#" class="nav-cta">Download</a></li>
       </ul>
     </nav>
@@ -634,10 +627,14 @@
         <a href="#features" class="btn-secondary">See how it works</a>
       </div>
 
-      <!-- Replace with hero screenshot or app preview GIF -->
       <div class="hero-media">
-        <div class="placeholder-icon" aria-hidden="true">APP</div>
-        <span>App screenshot or preview GIF</span>
+        <img
+          class="app-media"
+          src="assets/hero-library.jpg"
+          alt="Dart Read library with articles, newsletters, and books"
+          width="520"
+          height="1126"
+        />
       </div>
     </section>
 
@@ -659,10 +656,19 @@
               rewind. Works best when you want to push your pace.
             </p>
           </div>
-          <!-- Replace with RSVP mode GIF -->
           <div class="media-placeholder">
-            <div class="placeholder-icon" aria-hidden="true">RSVP</div>
-            <span>RSVP mode GIF</span>
+            <video
+              class="app-media"
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="metadata"
+              poster="assets/rsvp-reading-demo-poster.jpg"
+              aria-label="Dart Read RSVP mode demo"
+            >
+              <source src="assets/rsvp-reading-demo.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
 
@@ -676,14 +682,48 @@
               matters.
             </p>
           </div>
-          <!-- Replace with Highlight mode GIF -->
           <div class="media-placeholder">
-            <div class="placeholder-icon" aria-hidden="true">HL</div>
-            <span>Highlight mode GIF</span>
+            <video
+              class="app-media"
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="metadata"
+              poster="assets/word-highlight-demo-poster.jpg"
+              aria-label="Dart Read word highlight mode demo"
+            >
+              <source src="assets/word-highlight-demo.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
 
         <div class="feature-row">
+          <div class="feature-text">
+            <h2>Line Highlight Mode</h2>
+            <p>
+              Read line by line with the current sentence brought into focus as the page moves with
+              you. It gives you more context than single-word RSVP while still keeping your eyes
+              anchored, which is especially useful for dialogue, long chapters, and slower material.
+            </p>
+          </div>
+          <div class="media-placeholder">
+            <video
+              class="app-media"
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="metadata"
+              poster="assets/line-highlight-demo-poster.jpg"
+              aria-label="Dart Read line highlight mode demo"
+            >
+              <source src="assets/line-highlight-demo.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+
+        <div class="feature-row reverse">
           <div class="feature-text">
             <h2>Classic E-reader</h2>
             <p>
@@ -692,10 +732,15 @@
               navigation, notes, and progress tracking included.
             </p>
           </div>
-          <!-- Replace with E-reader screenshot -->
           <div class="media-placeholder">
-            <div class="placeholder-icon" aria-hidden="true">READ</div>
-            <span>E-reader screenshot</span>
+            <img
+              class="app-media"
+              src="assets/ereader-mode.jpg"
+              alt="Dart Read classic e-reader view"
+              width="520"
+              height="1126"
+              loading="lazy"
+            />
           </div>
         </div>
       </div>
@@ -737,10 +782,15 @@
         </div>
       </div>
 
-      <!-- Replace with content browser screenshot -->
       <div class="media-placeholder wide" style="margin-top: 48px">
-        <div class="placeholder-icon" aria-hidden="true">LIB</div>
-        <span>Library / browse screen screenshot</span>
+        <img
+          class="app-media"
+          src="assets/reading-stack.jpg"
+          alt="Dart Read library showing articles, article import, and fan fiction import"
+          width="1200"
+          height="780"
+          loading="lazy"
+        />
       </div>
     </section>
 
@@ -753,9 +803,10 @@
       <a href="#" class="btn-primary">Download on the App Store</a>
     </div>
 
-    <!-- ── Contact ── -->
-    <section id="contact" style="padding-bottom: 48px">
-      <div class="section-label">Get in touch</div>
+    <!-- ── Support ── -->
+    <section id="support" style="padding-bottom: 48px">
+      <span id="contact" aria-hidden="true"></span>
+      <div class="section-label">Support</div>
       <h2 class="section-title">We're here<br />to help.</h2>
       <p class="section-subtitle">
         Have a question, found a bug, or want to share feedback? Reach out. We read every message.
@@ -1066,9 +1117,51 @@
         if (e.key === 'Escape') closeAllModals();
       });
 
-      // Auto-open legal modals when linked directly.
-      if (window.location.hash === '#privacy-policy') openPolicy();
-      if (window.location.hash === '#terms-of-use') openTerms();
+      function closeOpenModals() {
+        document.querySelectorAll('.modal-overlay.open').forEach(function (openOverlay) {
+          openOverlay.classList.remove('open');
+        });
+        document.body.style.overflow = '';
+      }
+
+      function scrollToSupport() {
+        closeOpenModals();
+
+        var support = document.getElementById('support');
+        if (!support) return;
+
+        var offset = 84;
+        var supportTop = support.getBoundingClientRect().top + window.pageYOffset - offset;
+        var html = document.documentElement;
+        var previousScrollBehavior = html.style.scrollBehavior;
+
+        html.style.scrollBehavior = 'auto';
+        window.scrollTo(0, supportTop);
+        html.style.scrollBehavior = previousScrollBehavior;
+      }
+
+      function handlePageHash() {
+        var hash = window.location.hash.toLowerCase();
+
+        if (hash === '#privacy' || hash === '#privacy-policy') {
+          openPolicy();
+          return;
+        }
+
+        if (hash === '#terms' || hash === '#terms-of-use' || hash === '#terms-of-service') {
+          openTerms();
+          return;
+        }
+
+        if (hash === '#support' || hash === '#contact') {
+          scrollToSupport();
+        }
+      }
+
+      // Handle direct links and in-page hash changes for support and legal sections.
+      window.addEventListener('hashchange', handlePageHash);
+      window.addEventListener('load', handlePageHash);
+      handlePageHash();
     </script>
   </body>
 </html>
